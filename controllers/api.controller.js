@@ -7,9 +7,7 @@ export async function createApiKey(req, res, next) {
 
         if (!validDays) return res.status(400).json({ message: "Valid days is required" });
 
-        console.log(req.user.id)
-
-        const userId = req.user.id;
+        const userId = req.user._id;
         const apiKey = generateApiKey();
         const expairesAt = generateExpirationDate(validDays);
 
