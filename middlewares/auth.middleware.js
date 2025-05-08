@@ -1,9 +1,9 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import { JWT_SECRET } from '../config/env';
+import { JWT_SECRET } from '../config/env.js';
 dotenv.config();
 
-export async function authMiddleware(req, res, next) {
+async function authMiddleware(req, res, next) {
     try {
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
@@ -26,3 +26,6 @@ export async function authMiddleware(req, res, next) {
         return res.sendStatus(500);
     }
 }
+
+
+export default authMiddleware;

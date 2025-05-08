@@ -1,5 +1,6 @@
+import mongoose from "mongoose";
 import Api from "../models/api.model.js";
-import { generateExpirationDate } from "../utils/api.utils.js";
+import { generateApiKey, generateExpirationDate } from "../utils/api.utils.js";
 
 export async function createApiKey(req, res, next) {
     try {
@@ -11,8 +12,8 @@ export async function createApiKey(req, res, next) {
         const apiKey = generateApiKey();
         const expairesAt = generateExpirationDate(validDays);
 
-        const newApiKey = new Api.create({
-            userId,
+        const newApiKey = await Api.create({
+            userId: new mongoose.Types.ObjectId(userId),
             apiKey,
             expairesAt,
             isDeleted: false,
