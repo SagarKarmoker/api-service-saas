@@ -26,6 +26,10 @@ const apiSchema = new mongoose.Schema({
     hitCount: {
         type: Number,
         default: 0
+    },
+    lastUsedAt: {
+        type: Date,
+        default: null
     }
 }, {
     timestamps: true
