@@ -30,7 +30,7 @@ A robust API key management service built with Node.js, Express, and MongoDB. Th
 
 1. Clone the repository:
    ```bash
-   git clone [repository-url]
+   git clone https://github.com/SagarKarmoker/api-service-saas.git
    cd api-service-saas
    ```
 
