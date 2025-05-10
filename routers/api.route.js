@@ -6,6 +6,6 @@ const apiRouter = Router();
 
 apiRouter.post('/create', authMiddleware, createApiKey);
 apiRouter.get('/my-keys', authMiddleware, getApiKeyByUserId);
-apiRouter.delete('/delete', authMiddleware, revokeApiKey);
+apiRouter.delete('/delete/:id', authMiddleware, revokeApiKey);
 
 export default apiRouter;

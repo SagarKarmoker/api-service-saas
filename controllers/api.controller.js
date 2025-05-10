@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 import Api from "../models/api.model.js";
 import { generateApiKey, generateExpirationDate } from "../utils/api.utils.js";
 
@@ -6,14 +6,16 @@ export async function createApiKey(req, res, next) {
     try {
         const { validDays } = req.body;
 
-        if (!validDays) return res.status(400).json({ message: "Valid days is required" });
+        if (!validDays && validDays !== 0) return res.status(400).json({ message: "Valid days is required" });
 
-        const userId = req.user._id;
         const apiKey = generateApiKey();
         const expairesAt = generateExpirationDate(validDays);
 
+        // hased api key if required
+        // const hashedApiKey = await bcrypt.hash(apiKey, 10);
+
         const newApiKey = await Api.create({
-            userId: new mongoose.Types.ObjectId(userId),
+            userId: req.user.id,
             apiKey,
             expairesAt,
             isDeleted: false,
@@ -49,7 +51,10 @@ export async function createApiKey(req, res, next) {
 
 export async function getApiKeyByUserId(req, res, next) {
     try {
-        const allApiKeys = await Api.find({ userId: req.user.id });
+        const allApiKeys = await Api.find({
+            userId: req.user.id,
+            isDeleted: false
+        })
 
         if (!allApiKeys) return res.status(404).json({ message: "Api keys not found" });
 
@@ -66,7 +71,7 @@ export async function getApiKeyByUserId(req, res, next) {
 
 export async function revokeApiKey(req, res, next) {
     try {
-        const { apiKeyId } = req.body;
+        const apiKeyId = req.params.id;
 
         if (!apiKeyId) return res.status(400).json({ message: "Api key ID is required" });
 
